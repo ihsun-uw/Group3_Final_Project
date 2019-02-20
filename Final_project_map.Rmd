@@ -35,10 +35,10 @@ Including packages
 ```{r package, include=FALSE}
 
 install.packages("haven")
-install.packages("ggplot2")
+#install.packages("ggplot2")
 install.packages("foreign")
 library ("haven")
-library("ggplot2")
+#library("ggplot2")
 library("foreign")
 
 ```
@@ -60,6 +60,9 @@ chw_fp <- read_dta(url(link))
 install.packages("maptools")
 library("maptools")
 
+install.packages("sf")
+library("sf")
+
 ```
 
 
@@ -70,13 +73,28 @@ Bringing in map
 
 maplink="https://github.com/ihsun-uw/Group3_Final_Project/raw/master/MOZ-level_1.shp"
 
-moz_map = readShapePoly(maplink)
+moz_map = st_read("/Users/david/Documents/GitHub/Group3_Final_Project/Mozambique shape maps")
 
-moz_map = readShapeSpatial("maplink")
+```
 
+```{r}
+library(RColorBrewer)
+colors <- brewer.pal(9, "BuGn")
 
 ```
 
 
+```{r}
+install.packages("ggmap")
+library(ggplot2)
+library(ggmap)
+mapImage <- get_map(location = c(lon = -118, lat = 37.5),
+  color = "color",
+  source = "osm",
+  # maptype = "terrain",
+  zoom = 6)
 
+
+
+```
 
