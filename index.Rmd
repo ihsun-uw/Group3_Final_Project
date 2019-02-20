@@ -1,0 +1,130 @@
+## Course: Visual Analytics for Policy and Management
+### Final Project
+####Group 3: Dave Coomes, Quinhas Fernndes, Isabella Sun, Long Zong
+
+### 
+### 
+
+####*WRITE INTRODUCTION* what is the data? what is the story?
+### 
+### 
+
+####Figures:
+
+1. [Mozambique Community Health Workers contribuition on Family Planning](#fig1)
+
+2. [Box Plot: Average number of supervision per community health worker](#fig2)
+
+3. [Scatter Plot: Supervision v Contribution (we can come up with a better name later)](#fig3)
+
+3. [Scatter Plot: active chw v Contribution (we can come up with a better name later)](#fig4)
+
+
+First, we bring in the dataset we will use and load libraries. 
+```{r setup}
+library(ggplot2)
+library(ggrepel)
+library(foreign)
+library(haven)
+knitr::opts_chunk$set(echo = TRUE, warning=TRUE, message=TRUE)
+
+link="https://github.com/quinhasf/pubpol-599/raw/master/ape_analysis.dta"
+
+chw_fp <- read_dta(url(link))
+```
+
+
+###Lollipop Plot 
+We will create a plot showing how above or below different provinces are relative to the 10% target goal.
+
+Create data frame for ggplot to plot our lolipop plot
+```{r ggplot}
+chw_pf1 <- data.frame(chw_fp[c('province', 'ape_contrib')])
+
+tableFreq=as.data.frame(chw_pf1)
+
+names(tableFreq)=c("province","ape_contrib")
+
+tableFreqO=tableFreq[order(tableFreq$ape_contrib),]
+
+tableFreqO$gap=tableFreqO$ape_contrib-10
+
+tableFreqO$Target=ifelse(tableFreqO$gap>0,"Above Target","Below Target")
+
+```
+
+Misc table elements: title, subtitle, caption
+```{r}
+
+loli_title = "Mozambique Community Health Workers contribuition on Family Planning"
+
+loli_subtitle = "2017 province level gap on CHW contribuition"
+
+loli_caption = "Fig.1: Represents the contirbution of each province to achieve the 10% target (centered at 0)
+in 2017 (Gap analysis). Provinces are ploted from low to high perfomance.
+
+Source:Health Information System"
+
+```
+
+Create Loliplot 
+<a id='fig1'></a>
+```{r lolliplot}
+base = ggplot(tableFreqO, aes(province,gap,color=Target,
+                              label = round(gap,1))) 
+lolliplot1=base + geom_segment(aes(y =0, 
+                                   x = province, 
+                                   yend = gap, 
+                                   xend = province)) 
+lolliplot2=lolliplot1 + geom_point()
+
+lolliplot3= lolliplot2 + scale_x_discrete(limits=tableFreqO$province) 
+
+lollitplot4 = lolliplot3 + geom_text(size=3, nudge_x=0.35, nudge_y=0.1,show.legend = FALSE) +
+              labs(title = loli_title,
+                   subtitle = loli_subtitle,
+                    x ="Province", 
+                    y = "% points of the FP GAP",
+                    caption = loli_caption) +
+            theme(panel.background = element_rect(fill = "gray98",
+                                                    colour = "black"),
+                    plot.caption = element_text(hjust = 0), 
+                    plot.title = element_text(hjust = 0.5),
+                    plot.subtitle = element_text(hjust=0.5),
+                    legend.box.just = c("right","center"), 
+                    axis.text.x = element_text(size=7, angle = 60, vjust = 1, hjust=1)) +
+              geom_hline(yintercept=0,
+                    linetype="dashed",
+                    color = "black",
+                    size= 0.9,
+                    alpha= 0.8)
+
+
+lollitplot4 
+```
+
+###Box Plot: Average number of supervision per community health worker
+
+```{r}
+chw_fp$aver_sup_chw <- chw_fp$n_supervision / chw_fp$report_ape
+```
+
+<a id='fig2'></a>
+```{r}
+base = ggplot(chw_fp,aes(y=aver_sup_chw)) 
+box  = base + geom_boxplot()
+
+box+ coord_flip()
+
+```
+
+
+
+###SCATTER 1
+<a id='fig3'></a>
+```{r}
+ggplot(chw_fp, aes(x=ape_contrib, y= avergae_supervision_hf, label=province)) + 
+    geom_point() + geom_text_repel()
+
+```
+
