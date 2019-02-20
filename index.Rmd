@@ -17,7 +17,7 @@
 
 3. [Scatter Plot: Supervision v Contribution (we can come up with a better name later)](#fig3)
 
-3. [Scatter Plot: active chw v Contribution (we can come up with a better name later)](#fig4)
+4. [Scatter Plot: active chw v Contribution (we can come up with a better name later)](#fig4)
 
 
 First, we bring in the dataset we will use and load libraries. 
@@ -127,4 +127,14 @@ ggplot(chw_fp, aes(x=ape_contrib, y= avergae_supervision_hf, label=province)) +
     geom_point() + geom_text_repel()
 
 ```
+
+###SCATTER 2
+<a id='fig4'></a>
+```{r}
+
+base111=ggplot(data=chw_fp,aes (x=report_ape,
+                             y=ape_contrib, label=province))+geom_point(size=3)+ geom_text_repel()
+base111
+```
+
 
