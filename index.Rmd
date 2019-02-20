@@ -63,7 +63,7 @@ loli_subtitle = "2017 province level gap on CHW contribuition"
 loli_caption = "Fig.1: Represents the contirbution of each province to achieve the 10% target (centered at 0)
 in 2017 (Gap analysis). Provinces are ploted from low to high perfomance.
 
-Source:Health Information System"
+Source: Health Information System"
 
 ```
 
@@ -109,12 +109,28 @@ lollitplot4
 chw_fp$aver_sup_chw <- chw_fp$n_supervision / chw_fp$report_ape
 ```
 
+```{r}
+boxplot_title = "Distribution of average number of supervisions per community health worker"
+
+source = "Source: Health Information System"
+```
+
 <a id='fig2'></a>
 ```{r}
-base = ggplot(chw_fp,aes(y=aver_sup_chw)) 
-box  = base + geom_boxplot()
+base = ggplot(chw_fp,aes(y=aver_sup_chw, x='')) 
+box1  = base + geom_boxplot()
 
-box+ coord_flip()
+box2 = box1 + labs(title=boxplot_title,
+                     x =NULL, 
+                     y = 'Number of supervisions per community health worker',
+                     caption = source)
+box3= box2 + scale_y_continuous(breaks=1:15)
+
+box4 = box3 + theme(panel.background = element_rect(fill = "white",
+                                                    colour = "grey50"),
+                    plot.title = element_text(hjust = 0.5),
+                    plot.caption = element_text(hjust=0))
+box4+ coord_flip()
 
 ```
 
@@ -123,8 +139,18 @@ box+ coord_flip()
 ###SCATTER 1
 <a id='fig3'></a>
 ```{r}
-ggplot(chw_fp, aes(x=ape_contrib, y= avergae_supervision_hf, label=province)) + 
+scat1_title = " title..."
+```
+
+```{r}
+base = ggplot(chw_fp, aes(x=report_ape, y=ape_contrib, label=province)) + 
     geom_point() + geom_text_repel()
+
+scat1 = base + labs(title=scat1_title,
+                     x ="Total women of reproductive age", 
+                     y = 'Community health worker contribution',
+                     caption = source)
+scat1 
 
 ```
 
