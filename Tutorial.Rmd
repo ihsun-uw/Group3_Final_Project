@@ -1,0 +1,330 @@
+---
+title: "Tutorial"
+author: "Grupo 3"
+date: "2/25/2019"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE, echo=TRUE}
+library(uwIntroStats)
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(ggiraph)
+library(ggiraphExtra)
+library(foreign)
+library(haven)
+library(dotwhisker)
+library(broom)
+library(dplyr)
+
+knitr::opts_chunk$set(include = T)
+getwd()
+setwd("/Users/quinhasfernades/Desktop/PUBPOL 599 B/Class Exercise/Exercise_three")
+
+df <- read_dta("child_mortality.dta")
+```
+
+## Tutorial: Understanding trends and determinants of Child Mortality in Mozambique 
+
+*Prepare the data*
+
+```{r include=FALSE}
+# copy data
+df1=df
+head(df1)
+```
+
+```{r aggregating data, include=FALSE}
+df_aggre <- aggregate(cbind(NEONAT_COMB , INFANT_COMB, U5M_COMB, birthatend, hwdensity, midwifedensity)~provname, data=df1, FUN=mean )
+
+df_aggre
+```
+
+*Histogram of Birth attendance and GDP percapita*
+
+```{r echo=TRUE, warning=FALSE}
+base1= ggplot(df1,aes(x=birthatend)) 
+
+hist1= base1 + geom_histogram( binwidth =6,boundary=0, fill="grey50") 
+
+hist2= hist1 + stat_bin(binwidth = 6, aes(label=..count..), 
+                  geom = "text",boundary = 0,vjust=-0.5) +
+                  labs(title="Distribuition of birth atendance measures", 
+                       caption = "Source: health Information System",
+                       x= "Birth atendance (%)",
+                       y="Frequency") +
+          scale_x_continuous(breaks = c(0,25,50, 75, 100)) +
+   theme(plot.caption = element_text(hjust = 0), 
+                    plot.title = element_text(hjust = 0.5))
+                
+hist2
+```
+
+```{r echo=TRUE, warning=FALSE}
+base1= ggplot(df1,aes(x=gdppercap)) 
+
+hist1= base1 + geom_histogram( binwidth =250,boundary=0, fill="grey50") 
+
+hist2= hist1 + stat_bin(binwidth = 250, aes(label=..count..), 
+                  geom = "text",boundary = 0,vjust=-0.5) +
+                  labs(title="Distribuition of GDP measures", 
+                       caption = "Source: National Institute of Statistics",
+                       x= "GDP (usd)",
+                       y="Frequency") +
+   theme(plot.caption = element_text(hjust = 0), 
+                    plot.title = element_text(hjust = 0.5))
+                
+hist2
+```
+
+*Boxplots Under Five Mortality per Province and per year*
+
+```{r echo=TRUE, warning=FALSE}
+g <- ggplot(df, aes(x=reorder(provname,-U5M_COMB), y=U5M_COMB))
+g + geom_boxplot(varwidth=T, fill="grey80") + 
+    labs(title="Boxplot", 
+         subtitle="Under Five mortality Distribuition",
+         caption="Source: DHS",
+         x="Province",
+         y="Under Five Mortality") +
+   theme(panel.background = element_rect(fill = "gray98",
+                                                    colour = "black"),
+                    plot.caption = element_text(hjust = 0), 
+                    plot.title = element_text(hjust = 0.5),
+                    plot.subtitle = element_text(hjust=0.5),
+                    legend.box.just = c("right","center"), 
+                    axis.text.x = element_text(size=7, angle = 45, vjust = 1, hjust=1)) 
+
+```
+
+
+```{r echo=TRUE, warning=FALSE}
+g <- ggplot(df, aes(x=reorder(year,-U5M_COMB), y=U5M_COMB))
+g + geom_boxplot(varwidth=T, fill="grey80") + 
+    labs(title="Boxplot", 
+         subtitle="Under Five mortality Distribuition",
+         caption="Source: DHS",
+         x="Province",
+         y="Under Five Mortality") +
+   theme(panel.background = element_rect(fill = "gray98",
+                                                    colour = "black"),
+                    plot.caption = element_text(hjust = 0), 
+                    plot.title = element_text(hjust = 0.5),
+                    plot.subtitle = element_text(hjust=0.5),
+                    legend.box.just = c("right","center"), 
+                    axis.text.x = element_text(size=7, angle = 45, vjust = 1, hjust=1)) 
+
+```
+
+
+**Descriptive**
+
+*Radar Plot*
+```{r include=FALSE}
+# get minimun value by row
+df_aggre$min=apply(df_aggre[,c(2:7)],1,min)
+
+# turn this min values into a ranking
+df_aggre$min=rank(df_aggre$min,ties.method ='first' )
+
+# order city by ranking
+prov_fact=as.factor(df_aggre[order(df_aggre$min),]$provname)
+
+# turn city into ordered factor
+df_aggre$provname=factor(df_aggre$provname,
+                   levels= prov_fact,
+                   labels = prov_fact,
+                   ordered = T)
+
+# delete column with ranks
+df_aggre$min=NULL
+```
+
+```{r include=FALSE}
+head(df_aggre)
+```
+
+
+```{r fig.width=15, fig.height=10,echo=TRUE}
+
+base = ggRadar(df_aggre,aes(group='provname'),legend.position="none") 
+
+radar1 = base + facet_wrap(~provname,nrow =3) +
+    labs(title = "Radar plot: Province main study variables",
+                    caption = "Fig.1: describes how provinces are performing on every study variable
+
+Source:Health Information System") +
+              theme(panel.background = element_rect(fill = "gray90"),
+                    plot.caption = element_text(hjust = 0, size = 10), 
+                    plot.title = element_text(hjust = 0.5, size=14)) 
+
+radar1 
+```
+
+
+*Correlation matrix and plot*
+
+```{r include=FALSE, warning=FALSE}
+df_amat <- aggregate(cbind(NEONAT_COMB , INFANT_COMB, U5M_COMB, birthatend, hwdensity, midwifedensity, facpop, mddensity, ghepercap, ofpercap, gdppercap, hivprevchild)~provname, data=df1, FUN=mean )
+
+df_matrix <- select(df_amat, NEONAT_COMB , INFANT_COMB, U5M_COMB, birthatend, hwdensity, midwifedensity, facpop,  ghepercap, gdppercap, hivprevchild)
+
+head(df_matrix)
+
+corr <- round(cor(df_matrix), 1)
+corr
+```
+
+```{r echo=TRUE, warning=FALSE}
+library(ggcorrplot)
+ggcorrplot(corr, hc.order = TRUE, 
+           type = "lower", 
+           lab = TRUE, 
+           lab_size = 2, 
+           method="circle", 
+           colors = c("tomato2", "white", "springgreen3"), 
+           title="Correlation Graphic", 
+           ggtheme=theme_gray) +
+     labs(title = "Mozambique trends on Under five, Infant and Neonatal Mortality",
+                    y ="Mortality rate (per 1000 live births)", 
+                    x = "Years",
+                    caption = "Fig.1: National-level time-series for child mortality 
+in Mozambique 2000–10 (including 95% CI)
+
+Source:Demographic Heath Survey") +
+  theme(plot.caption = element_text(hjust = 0), 
+                    plot.title = element_text(hjust = 0.5),
+                    axis.text.x = element_text(size=8,angle = 45),
+                    axis.text.y = element_text(size=8,angle = 0))
+```
+
+
+**Inferential**
+
+**Scatter Plots**
+
+```{r echo=TRUE, warning=FALSE}
+scat <- ggplot(df, aes(x=year, y=U5M_COMB)) +
+  geom_point(aes(col=provname), size=1) + 
+  geom_smooth(method="loess", se=T, size=1) + 
+  labs(title="Mozambique trends on Under five, Infant and Neonatal Mortality", 
+       y="U5 Mortality rate (per 1000 live births)", 
+       x="Year", 
+       caption = "Source: Demographic Healh Surveys") +
+    theme(legend.position = "right",
+  plot.caption = element_text(hjust = 0), 
+                    plot.title = element_text(hjust = 0.5)) +
+  scale_x_continuous(breaks = c(2000,2002,2004,2006,2008,2010))
+
+plot(scat)
+```
+
+
+```{r echo=TRUE, warning=FALSE}
+scat1 <- ggplot(df, aes()) + 
+  geom_point(aes(x=year, y=U5M_COMB, color="Under Five Mortality"), size = 0.8, alpha=1/3) + 
+  geom_smooth(aes(x=year, y=U5M_COMB), method="loess", se=T, size=0.6, color="purple") +
+  geom_point(aes(x=year, y=NEONAT_COMB, color= "Neonatal Mortality"), size = 0.8, alpha=1/4) + 
+  geom_smooth(aes(x=year, y=NEONAT_COMB), method="loess", se=T, size=0.6, color="green") +
+   geom_point(aes(x=year, y=INFANT_COMB, color= "Infant Mortality"), size = 0.8, alpha=1/5) + 
+  geom_smooth(aes(x=year, y=INFANT_COMB), method="loess", se=T, size=0.6, color="red") +
+   labs(title = "Mozambique trends on Under five, Infant and Neonatal Mortality",
+                    y =" U5 Mortality rate (per 1000 live births)", 
+                    x = "Years",
+                    caption = "Fig.1: National-level time-series for child mortality in Mozambique 2000–10 (including 95% CI)
+
+Source:Demographic Heath Survey") +
+  theme(legend.position = "bottom",
+  plot.caption = element_text(hjust = 0), 
+                    plot.title = element_text(hjust = 0.5)) +
+  scale_x_continuous(breaks = c(2000,2002,2004,2006,2008,2010)) 
+
+scat1
+```
+
+
+```{r echo=TRUE, warning=FALSE}
+scat2 <- ggplot(df, aes()) + 
+  geom_smooth(aes(x=year, y=U5M_COMB), method="loess", se=T, size=0.6, color="purple") +
+  geom_smooth(aes(x=year, y=NEONAT_COMB), method="loess", se=T, size=0.6, color="green") +
+  geom_smooth(aes(x=year, y=INFANT_COMB), method="loess", se=T, size=0.6, color="red") +
+   labs(title = "Mozambique trends on Under five, Infant and Neonatal Mortality",
+                    y ="Mortality rate (per 1000 live births)", 
+                    x = "Years",
+                    caption = "Fig.1: National-level time-series for child mortality in Mozambique 2000–10 (including 95% CI)
+
+Source:Demographic Heath Survey") +
+  theme(legend.position = "bottom",
+  plot.caption = element_text(hjust = 0), 
+                    plot.title = element_text(hjust = 0.5)) +
+  scale_x_continuous(breaks = c(2000,2002,2004,2006,2008,2010)) 
+
+scat2
+```
+
+
+*Results of adjusted linear regression model & plots*
+
+```{r include=FALSE}
+model1=lm(NEONAT_COMB ~ birthatend + midwifedensity + hwdensity + facpop, data=df1)
+
+model1_t = tidy(model1) %>%   
+    mutate(model = "Neonatal Mortality") 
+
+model1_t
+```
+
+
+```{r include=FALSE}
+
+model2=lm(INFANT_COMB ~ birthatend + midwifedensity + hwdensity + facpop, data=df1)
+
+model2_t = tidy(model2) %>%  
+    mutate(model = "Child Mortality") 
+
+model2_t
+
+```
+
+
+```{r include=FALSE}
+model3=lm(INFANT_COMB ~ birthatend + midwifedensity + hwdensity + facpop, data=df1)
+
+model3_t = tidy(model3) %>%  
+    mutate(model = "Under-Five Mortality") 
+
+model3_t
+
+```
+
+```{r echo=TRUE}
+# combining
+allModels=rbind(model1_t, model2_t, model3_t)
+
+#plotting
+dwplot(allModels) + facet_wrap(~model)+ 
+  geom_vline(xintercept = 0, 
+               colour = "black", 
+               linetype = 4) + 
+      labs(title = "Effect of Health Human resources and Service 
+           Utilization on Child Mortality",
+                    caption = "Fig.1: Show regression coeficientes and 95% CI for birth atendance,
+midewife desnsity and total health human resources on child mortality.
+
+Source:Health Information System & DHS") +
+              theme(panel.background = element_rect(fill = "gray97",
+                                                    colour = "black"),
+                    plot.caption = element_text(hjust = 0, size = 8), 
+                    plot.title = element_text(hjust = 0.5, size=12)) +
+  theme(axis.text.y = element_text(angle = 45, vjust = 0.6))
+```
+
+
+**Maps: province U5M in 2010**
+
+
+
+
