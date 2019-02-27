@@ -157,9 +157,13 @@ scat1
 ###SCATTER 2
 <a id='fig4'></a>
 ```{r}
-
+scat2_title = " Average Number of Active CHW to Each Province's Contribution"
 base111=ggplot(data=chw_fp,aes (x=report_ape,
                              y=ape_contrib, label=province))+geom_point(size=3)+ geom_text_repel()
+base111=base111+labs(title=scat2_title,
+                     x ="Average Number of Active CHW", 
+                     y = 'Contribution in Each Province',
+                     caption = source)
 base111
 ```
 
