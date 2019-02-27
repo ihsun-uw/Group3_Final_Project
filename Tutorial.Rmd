@@ -1,6 +1,6 @@
 ---
 title: "Tutorial"
-author: "Grupo 3"
+author: "Group 3"
 date: "2/25/2019"
 output:
   pdf_document: default
@@ -19,13 +19,16 @@ library(haven)
 library(dotwhisker)
 library(broom)
 library(dplyr)
+library(openxlsx)
 
 knitr::opts_chunk$set(include = T)
-getwd()
-setwd("/Users/quinhasfernades/Desktop/PUBPOL 599 B/Class Exercise/Exercise_three")
 
-df <- read_dta("child_mortality.dta")
+link="https://github.com/ihsun-uw/Group3_Final_Project/raw/master/child_mortality.dta"
+
+df <- read_dta(url(link))
+
 ```
+
 
 ## Tutorial: Understanding trends and determinants of Child Mortality in Mozambique 
 
