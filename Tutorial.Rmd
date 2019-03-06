@@ -3,8 +3,8 @@ title: "Tutorial"
 author: "Group 3"
 date: "2/25/2019"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE, echo=TRUE}
