@@ -8,6 +8,7 @@ output:
 ---
 
 ```{r setup, include=FALSE, echo=TRUE}
+install.packages("ggcorrplot")
 library(uwIntroStats)
 library(ggplot2)
 library(dplyr)
@@ -20,6 +21,7 @@ library(dotwhisker)
 library(broom)
 library(dplyr)
 library(openxlsx)
+library(ggcorrplot)
 
 knitr::opts_chunk$set(include = T)
 
