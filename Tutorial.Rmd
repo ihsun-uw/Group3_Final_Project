@@ -248,7 +248,7 @@ plot(scat23)
 
 
 ```{r}
-scat23 <- ggplot(df, aes(x=year, y=midwifedensity)) +
+scat233 <- ggplot(df, aes(x=year, y=midwifedensity)) +
   geom_point(aes(col=provname), size=1) + 
   geom_smooth(method="loess", se=T, size=1) + 
   labs(title="Mozambique trends on MId-wife Density in Provinces", 
@@ -260,7 +260,7 @@ scat23 <- ggplot(df, aes(x=year, y=midwifedensity)) +
                     plot.title = element_text(hjust = 0.5)) +
   scale_x_continuous(breaks = c(2000,2002,2004,2006,2008,2010)) + theme(legend.title=element_blank())
 
-plot(scat23) 
+plot(scat233) 
 ```
 
 
