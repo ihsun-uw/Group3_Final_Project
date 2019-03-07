@@ -1,0 +1,94 @@
+---
+title: "Tutorial Lolliplot"
+author: "Grupo 3"
+date: "3/6/2019"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE, echo=TRUE}
+library(uwIntroStats)
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(ggiraph)
+library(ggiraphExtra)
+library(foreign)
+library(haven)
+library(dotwhisker)
+library(broom)
+library(dplyr)
+library(tidyr)
+library(broom.mixed)
+
+knitr::opts_chunk$set(include = T)
+getwd()
+setwd("/Users/quinhasfernades/Desktop/PUBPOL 599 B/Class Exercise/Exercise_three")
+
+df <- read_dta("child_mortality.dta")
+```
+
+*Lolliplot*
+
+```{r include=FALSE}
+df_2010 <- subset(df, year==2010)
+
+df_2010=df_2010[order(df_2010$U5M_COMB),]
+
+df_2010$gap <- df_2010$U5M_COMB - 75
+
+df_2010$MDG_Target=ifelse(df_2010$gap>0,"-Not Achieved","Achieved")
+
+```
+
+```{r ggplot, echo=TRUE}
+base = ggplot(df_2010, 
+              aes(x=reorder(provname, gap), 
+                  y=gap, 
+                  color=MDG_Target,
+                              label = round(gap,1))) 
+
+lolliplot1=base + geom_segment(aes(y =0, 
+                                   x = provname, 
+                                   yend = gap, 
+                                   xend = provname)) 
+
+lolliplot2=lolliplot1 + geom_point()
+
+lolliplot3= lolliplot2 + scale_x_discrete(limits=df_2010$provname) 
+
+lollitplot4 = lolliplot3 + geom_text(nudge_x=0.35, nudge_y=0.1,show.legend = F, size=3) +
+  labs(title = "Mozambique 2010 Gap analysis to achieve MDG 4 Goal",
+       subtitle = "Province level gap to achieve under five mortality reduction goal",
+       x ="Province", 
+       y = "U5 mortality rate gap (per 1000 LB)",
+       caption = "Fig.1: Represents province level gap to achieve 2/3 reduction on under five mortality rate (75 per 1000 live births target centered at 0).
+      
+       
+       Source:Demographic Health Surveys") +
+  theme(panel.background = element_rect(fill = "grey96",
+                                        colour = "grey50"),
+        plot.caption = element_text(hjust = 0, size = 8), 
+        plot.title = element_text(hjust = 0.5, size=12, face="bold"),
+        plot.subtitle = element_text(hjust=0.5, face="bold"),
+        legend.box.just = c("right","center"), 
+        axis.text.y = element_text(size=7),
+        axis.text.x = element_text(size=7, angle = 45, vjust = 1, hjust=1),
+        axis.title.x = element_text(size=10),
+        axis.title.y = element_text(size=8)) +
+  geom_hline(yintercept=0,
+             linetype="dashed",
+             color = "black",
+             size= 0.9,
+             alpha= 0.8)
+
+
+lollitplot4 
+```
+
+
+
+
+
+
