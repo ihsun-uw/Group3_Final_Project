@@ -3,40 +3,40 @@ title: "Group_3_final_project_map"
 output: html_document
 ---
 
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
-
-##DMC - starting code for map
+<!-- DMC - starting code for map -->
 
 
 Including packages
 
-```{r package, include=FALSE}
 
-install.packages("haven")
+```{r install_packages, eval=FALSE}
+
+install.packages("utilsIPEA")
+install.packages("rgdal")
+install.packages("raster")
+install.packages("tmaptools")
+install.packages("mapshaper")
+install.packages("tmap")
+install.packages("leaflet")
+install.packages("RColorBrewer")
+install.packages("classint")
+install.packages("dplyr")
+
+
+```
+
+
+```{r package, include=FALSE, eval=TRUE}
+
+#install.packages("haven")
 #install.packages("ggplot2")
-install.packages("foreign")
+#install.packages("foreign")
 library ("haven")
 #library("ggplot2")
 library("foreign")
@@ -54,8 +54,8 @@ chw_fp <- read_dta(url(link))
 
 ```
 
-
-```{r}
+<!-- Don't need this - we install before
+```{r install_packages_2, eval=FALSE, include=FALSE}
 
 install.packages("maptools")
 library("maptools")
@@ -64,18 +64,103 @@ install.packages("sf")
 library("sf")
 
 ```
-
+-->
 
 
 Bringing in map
 
-```{r map, include=FALSE}
+```{r map, include=FALSE, eval=FALSE}
+#DMC - using the zip file in the repository instead of the shape file
+#maplink="https://github.com/ihsun-uw/Group3_Final_Project/raw/master/MOZ-level_1.shp"
+#moz_map = st_read("/Users/david/Documents/GitHub/Group3_Final_Project/Mozambique shape maps")
 
-maplink="https://github.com/ihsun-uw/Group3_Final_Project/raw/master/MOZ-level_1.shp"
-
-moz_map = st_read("/Users/david/Documents/GitHub/Group3_Final_Project/Mozambique shape maps")
+zip_mozmap_SHP = "https://github.com/ihsun-uw/Group3_Final_Project/raw/master/Mozambique%20shape%20maps.zip"
 
 ```
+
+
+```{r, eval=FALSE}
+library(utils)
+temp=tempfile()
+download.file(zip_mozmap_SHP, temp)
+unzip(temp)
+```
+
+To know what shapefiles are now in your directory:
+
+```{r, eval=FALSE}
+(maps=list.files(pattern = 'shp'))
+```
+
+
+You select which map from the object _maps_ you need:
+
+```{r, eval=FALSE, results='hide', warning=FALSE,message=FALSE}
+# notice the parameters use in the chunk!!
+
+library(rgdal)
+mozzipMap <- readOGR("MOZ-level_1.shp",stringsAsFactors=F) 
+```
+
+We have a map:
+
+```{r, eval=FALSE}
+plot(mozzipMap)
+
+str(chw_fp$province)
+#str(mozzipMap)
+head(chw_fp$province, 10)
+names(mozzipMap)
+head(mozzipMap$CAPTION, 50)
+
+str(mozzipMap$CAPTION)
+
+mozzipMap$CAPTION=as.numeric(mozzipMap$CAPTION)
+
+
+```
+
+<!-- Generating the list of provinces and assigning a number
+1: Cabo Delgado
+2: Gaza
+3: Inhambane
+4: Manica
+5: Maputo Provincia
+6: Nampula
+7: Niassa
+8: Sofala
+9: Tete
+10: Zambezia
+-->
+
+```{r recoding_provinces, include=FALSE}
+
+SchoolData$Grade[SchoolData$Grade==5] <- "Grade Five"
+
+chw_fp$provnice_num <- chw_fp$province
+chw_fp$provnice_num[chw_fp$provnice_num=="CABO DELGADO"] <- 1
+
+```
+
+
+
+
+```{r, eval=TRUE}
+layerContrib=merge(mozzipMap,chw_fp, by.x='CAPTION', by.y='province',all.x=F)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ```{r}
 library(RColorBrewer)
