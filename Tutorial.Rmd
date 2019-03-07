@@ -8,7 +8,7 @@ output:
 ---
 
 ```{r setup, include=FALSE, echo=TRUE}
-install.packages("ggcorrplot")
+
 library(uwIntroStats)
 library(ggplot2)
 library(dplyr)
@@ -197,7 +197,7 @@ ggcorrplot(corr, hc.order = TRUE,
                     y ="Mortality rate (per 1000 live births)", 
                     x = "Years",
                     caption = "Fig.1: National-level time-series for child mortality 
-in Mozambique 2000â€“10 (including 95% CI)
+in Mozambique 2000â€?10 (including 95% CI)
 
 Source:Demographic Heath Survey") +
   theme(plot.caption = element_text(hjust = 0), 
@@ -229,6 +229,61 @@ scat <- ggplot(df, aes(x=year, y=U5M_COMB)) +
 plot(scat) 
 ```
 
+```{r}
+scat23 <- ggplot(df, aes(x=year, y=hwdensity)) +
+  geom_point(aes(col=provname), size=1) + 
+  geom_smooth(method="loess", se=T, size=1) + 
+  labs(title="Mozambique trends on Health Worker Density in Provinces", 
+       y="Density of Health Profession in the Region (per 1000 live births)", 
+       x="Year", 
+       caption = "Source: Demographic Healh Surveys") +
+    theme(legend.position = "right",
+  plot.caption = element_text(hjust = 0), 
+                    plot.title = element_text(hjust = 0.5)) +
+  scale_x_continuous(breaks = c(2000,2002,2004,2006,2008,2010)) + theme(legend.title=element_blank())
+
+plot(scat23) 
+```
+
+
+
+```{r}
+scat233 <- ggplot(df, aes(x=year, y=midwifedensity)) +
+  geom_point(aes(col=provname), size=1) + 
+  geom_smooth(method="loess", se=T, size=1) + 
+  labs(title="Mozambique trends on MId-wife Density in Provinces", 
+       y="Density of Mis-wife in the Region (per 1000 live births)", 
+       x="Year", 
+       caption = "Source: Demographic Healh Surveys") +
+    theme(legend.position = "right",
+  plot.caption = element_text(hjust = 0), 
+                    plot.title = element_text(hjust = 0.5)) +
+  scale_x_continuous(breaks = c(2000,2002,2004,2006,2008,2010)) + theme(legend.title=element_blank())
+
+plot(scat233) 
+```
+
+
+
+
+```{r}
+scat233 <- ggplot(df, aes(x=year, y=hwdensity)) +
+  geom_point(aes(col=provname), size=1) + 
+  geom_smooth(method="loess", se=T, size=1) + 
+  labs(title="Mozambique Ra", 
+       y="Density of Health Profession in the Region (per 1000 live births)", 
+       x="Year", 
+       caption = "Source: Demographic Healh Surveys") +
+    theme(legend.position = "right",
+  plot.caption = element_text(hjust = 0), 
+                    plot.title = element_text(hjust = 0.5)) +
+  scale_x_continuous(breaks = c(2000,2002,2004,2006,2008,2010)) + theme(legend.title=element_blank())
+
+plot(scat23)
+```
+
+
+
 
 ```{r echo=TRUE, warning=FALSE}
 scat1 <- ggplot(df, aes()) + 
@@ -241,7 +296,7 @@ scat1 <- ggplot(df, aes()) +
    labs(title = "Mozambique trends on Under five, Infant and Neonatal Mortality",
                     y =" U5 Mortality rate (per 1000 live births)", 
                     x = "Years",
-                    caption = "Fig.1: National-level time-series for child mortality in Mozambique 2000â€“10 (including 95% CI)
+                    caption = "Fig.1: National-level time-series for child mortality in Mozambique 2000â€?10 (including 95% CI)
 
 Source:Demographic Heath Survey") +
   theme(legend.position = "bottom",
@@ -261,7 +316,7 @@ scat2 <- ggplot(df, aes()) +
    labs(title = "Mozambique trends on Under five, Infant and Neonatal Mortality",
                     y ="Mortality rate (per 1000 live births)", 
                     x = "Years",
-                    caption = "Fig.1: National-level time-series for child mortality in Mozambique 2000â€“10 (including 95% CI)
+                    caption = "Fig.1: National-level time-series for child mortality in Mozambique 2000â€?10 (including 95% CI)
 
 Source:Demographic Heath Survey") +
   theme(legend.position = "bottom",
