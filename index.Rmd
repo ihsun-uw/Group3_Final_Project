@@ -26,10 +26,12 @@
 
 First, we bring in the dataset we will use and load libraries. 
 ```{r setup}
+install.packages("ggrepel", repos = "http://cran.us.r-project.org")
 library(ggplot2)
 library(ggrepel)
 library(foreign)
 library(haven)
+
 knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=TRUE)
 
 link="https://github.com/quinhasf/pubpol-599/raw/master/ape_analysis.dta"
@@ -179,7 +181,7 @@ install.packages("utilsIPEA", repos = "http://cran.us.r-project.org")
 install.packages("rgdal", repos = "http://cran.us.r-project.org")
 install.packages("raster", repos = "http://cran.us.r-project.org")
 install.packages("tmaptools", repos = "http://cran.us.r-project.org")
-install.packages("mapshaper", repos = "http://cran.us.r-project.org")
+#install.packages("mapshaper", repos = "http://cran.us.r-project.org")
 install.packages("tmap", repos = "http://cran.us.r-project.org")
 install.packages("leaflet", repos = "http://cran.us.r-project.org")
 install.packages("RColorBrewer", repos = "http://cran.us.r-project.org")
