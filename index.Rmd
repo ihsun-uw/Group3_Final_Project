@@ -26,10 +26,12 @@
 
 First, we bring in the dataset we will use and load libraries. 
 ```{r setup}
+install.packages("ggrepel", repos = "http://cran.us.r-project.org")
 library(ggplot2)
 library(ggrepel)
 library(foreign)
 library(haven)
+
 knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=TRUE)
 
 link="https://github.com/quinhasf/pubpol-599/raw/master/ape_analysis.dta"
@@ -179,7 +181,7 @@ install.packages("utilsIPEA", repos = "http://cran.us.r-project.org")
 install.packages("rgdal", repos = "http://cran.us.r-project.org")
 install.packages("raster", repos = "http://cran.us.r-project.org")
 install.packages("tmaptools", repos = "http://cran.us.r-project.org")
-install.packages("mapshaper", repos = "http://cran.us.r-project.org")
+#install.packages("mapshaper", repos = "http://cran.us.r-project.org")
 install.packages("tmap", repos = "http://cran.us.r-project.org")
 install.packages("leaflet", repos = "http://cran.us.r-project.org")
 install.packages("RColorBrewer", repos = "http://cran.us.r-project.org")
@@ -396,12 +398,13 @@ colorPallette <- findColours(intervals, colors)
 <a id='fig5'></a>
 ```{r plot_2, eval=TRUE, include=TRUE}
 
-legendText="intervals"
+legendText="u5 mortality rate"
 shrinkLegend=1
 title="Under 5 mortality rate in Mozambique by province (2010)"
 
+
 # first the ORIGINAL to signal missing values:
-plot(mozzipMap,col='red',main=title, border="black", lwd=1) 
+plot(mozzipMap,col='red',main=title, border="black", lwd=1, sub=source) 
 
 # now the info on contributions
 plot(layerContrib_2, col = colorPallette,border=NA,add=T) #add
@@ -448,12 +451,12 @@ colorPallette <- findColours(intervals, colors)
 <a id='fig6'></a>
 ```{r plot3, eval=TRUE, include=TRUE}
 
-legendText="intervals"
+legendText="Change in u5 mortality"
 shrinkLegend=1
 title="Percent change in u5 mortality rate in Mozambique by province \n(2000-2010)"
 
 # first the ORIGINAL to signal missing values:
-plot(mozzipMap,col='red',main=title, border="black", lwd=1) 
+plot(mozzipMap,col='red',main=title, border="black", lwd=1, source=source) 
 
 # now the info on contributions
 plot(layerContrib_3, col = colorPallette,border=NA,add=T) #add
