@@ -1,0 +1,8 @@
+scat44 <- ggplot(df, aes()) + 
+  geom_point(aes(x=year, y=hwdensity, color="Health Worker Density"), size = 0.8, alpha=1/3) + 
+  geom_smooth(aes(x=year, y=hwdensity), method="loess", se=T, size=0.6, color="purple") +
+  geom_point(aes(x=year, y=midwifedensity, color= "Midwife Density"), size = 0.8, alpha=1/4) + 
+  geom_smooth(aes(x=year, y=midwifedensity), method="loess", se=T, size=0.6, color="green") +
+  geom_point(aes(x=year, y=mddensity, color= "Medical Doctor Density"), size = 0.8, alpha=1/5) +
+  geom_smooth(aes(x=year, y=mddensity), method="loess", se=T, size=0.6, color="red") +
+  labs(title = "Health Improvement in Mozambique that may Influenced Mortality",
