@@ -54,7 +54,7 @@ chw_fp <- read_dta(url(link))
 ```
 
 Create data frame
-```{r include=FALSE}
+```{r}
 chw_pf1 <- data.frame(chw_fp[c('province', 'ape_contrib')])
 tableFreq=as.data.frame(chw_pf1)
 names(tableFreq)=c("province","ape_contrib")
