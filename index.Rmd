@@ -48,7 +48,7 @@ library(dotwhisker)
 library(broom)
 library(dplyr)
 library(openxlsx)
-knitr::opts_chunk$set(echo = TRUE, warning=TRUE, message=TRUE)
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=TRUE)
 link="https://github.com/quinhasf/pubpol-599/raw/master/ape_analysis.dta"
 chw_fp <- read_dta(url(link))
 ```
