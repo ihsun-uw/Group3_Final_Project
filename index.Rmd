@@ -6,7 +6,7 @@
 ### Final Project
 ####Group 3: Dave Coomes, Quinhas Fernndes, Isabella Sun, Long Zong
 
-This tutorial includes 7 figures:
+This tutorial includes 8 figures:
 
 1. Univariate: [Mozambique Community Health Workers contribuition on Family Planning](#fig1)
 
@@ -29,11 +29,9 @@ This tutorial includes 7 figures:
 
 For this final project, we used data from two sources. The first is the Under Five Mortality Dataset. The second is the Community Health Workers dataset. 
 
-**Under Five Mortality dataset** - 
-Provincial-level under-5, infant, and neonatal mortality from 2000 to 2010 in Mozambique was estimated using data from the 2003 and 2011 DHS and the 2008 Multiple Indicator Cluster Survey (MICS). These three datasets were merged and used to calculate the provincial-level probability of a child dying for each year of the 11-year period using direct life-table estimation methods.
+**Under Five Mortality dataset:** Provincial-level under-5, infant, and neonatal mortality from 2000 to 2010 in Mozambique was estimated using data from the 2003 and 2011 DHS and the 2008 Multiple Indicator Cluster Survey (MICS). These three datasets were merged and used to calculate the provincial-level probability of a child dying for each year of the 11-year period using direct life-table estimation methods.
 
-**Community Health Workers dataset** - 
-To understand the extent to which the program implementation was achieving the expected results we used data from two main sources (aggregated in one dataset), the Health Information System and the population census. The HIS system provided the number of CHW by province and new users of family planning. We abstracted from the census the number of women in reproductive age.
+**Community Health Workers dataset:** To understand the extent to which the program implementation was achieving the expected results we used data from two main sources (aggregated in one dataset), the Health Information System and the population census. The HIS system provided the number of CHW by province and new users of family planning. We abstracted from the census the number of women in reproductive age.
 
 
 You can access the github repository [HERE](https://github.com/ihsun-uw/Group3_Final_Project)
