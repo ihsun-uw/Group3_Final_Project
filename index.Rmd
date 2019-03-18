@@ -23,22 +23,24 @@
 
 6. [Map: Change in under 5 mortality rate from 2000-2010 by province](#fig6)
 
+<br>
 
 First, we bring in the dataset we will use and load libraries. 
-```{r setup}
-install.packages("ggrepel", repos = "http://cran.us.r-project.org")
+```{r setup, warning=FALSE, message=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE, warnings=FALSE, message=FALSE)
+
+if (!require(ggrepel)) install.packages("ggrepel", repos = "http://cran.us.r-project.org")
 library(ggplot2)
 library(ggrepel)
 library(foreign)
 library(haven)
 
-knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=TRUE)
-
 link="https://github.com/quinhasf/pubpol-599/raw/master/ape_analysis.dta"
-
 chw_fp <- read_dta(url(link))
 ```
 
+<br>
 
 ###Lollipop Plot 
 We will create a plot showing how above or below different provinces are relative to the 10% target goal.
@@ -109,6 +111,8 @@ lollitplot4 = lolliplot3 + geom_text(size=3, nudge_x=0.35, nudge_y=0.1,show.lege
 lollitplot4 
 ```
 
+<br>
+
 ###Box Plot: Average number of supervision per community health worker
 
 ```{r}
@@ -141,6 +145,7 @@ box4+ coord_flip()
 ```
 
 
+<br>
 
 ###SCATTER 1
 <a id='fig3'></a>
@@ -160,6 +165,8 @@ scat1
 
 ```
 
+<br>
+
 ###SCATTER 2
 <a id='fig4'></a>
 ```{r}
@@ -173,20 +180,23 @@ base111=base111+labs(title=scat2_title,
 base111
 ```
 
+<br>
+<br>
+
 ###MAPS of Under 5 Mortality Rate
 
 ```{r install_packages, eval=TRUE, include=FALSE}
 
-install.packages("utilsIPEA", repos = "http://cran.us.r-project.org")
-install.packages("rgdal", repos = "http://cran.us.r-project.org")
-install.packages("raster", repos = "http://cran.us.r-project.org")
-install.packages("tmaptools", repos = "http://cran.us.r-project.org")
+if (!require(utilsIPEA)) install.packages("utilsIPEA", repos = "http://cran.us.r-project.org")
+if (!require(rgdal)) install.packages("rgdal", repos = "http://cran.us.r-project.org")
+if (!require(raster)) install.packages("raster", repos = "http://cran.us.r-project.org")
+if (!require(tmaptools)) install.packages("tmaptools", repos = "http://cran.us.r-project.org")
 #install.packages("mapshaper", repos = "http://cran.us.r-project.org")
-install.packages("tmap", repos = "http://cran.us.r-project.org")
-install.packages("leaflet", repos = "http://cran.us.r-project.org")
-install.packages("RColorBrewer", repos = "http://cran.us.r-project.org")
-install.packages("classInt", repos = "http://cran.us.r-project.org")
-install.packages("dplyr", repos = "http://cran.us.r-project.org")
+if (!require(tmap)) install.packages("tmap", repos = "http://cran.us.r-project.org")
+if (!require(leaflet)) install.packages("leaflet", repos = "http://cran.us.r-project.org")
+if (!require(RColorBrewer)) install.packages("RColorBrewer", repos = "http://cran.us.r-project.org")
+if (!require(classInt)) install.packages("classInt", repos = "http://cran.us.r-project.org")
+if (!require(dplyr)) install.packages("dplyr", repos = "http://cran.us.r-project.org")
 library(utilsIPEA)
 library(rgdal)
 library(raster)
@@ -364,7 +374,9 @@ df_new$u5_change[df_new$province_num==11] <- 100*(df_new$U5M_COMB[df_new$provinc
 
 ```
 
+<br>
 
+###MAP 1
 Creating the first map of the under 5 mortality rate by province
 
 ```{r layer_plot2, eval=TRUE}
@@ -394,7 +406,7 @@ colorPallette <- findColours(intervals, colors)
 
 ```
 
-###MAP 1
+
 <a id='fig5'></a>
 ```{r plot_2, eval=TRUE, include=TRUE}
 
@@ -404,7 +416,9 @@ title="Under 5 mortality rate in Mozambique by province (2010)"
 
 
 # first the ORIGINAL to signal missing values:
-plot(mozzipMap,col='red',main=title, border="black", lwd=1, sub=source) 
+plot(mozzipMap,col='red',main=title, border="black", lwd=1) 
+
+title(sub=source, adj=0)
 
 # now the info on contributions
 plot(layerContrib_2, col = colorPallette,border=NA,add=T) #add
@@ -418,6 +432,10 @@ legend('topright',
        title=legendText)
 ```
 
+<br>
+
+
+###MAP 2
 Generating one more data set for mapping - change in u5 MR
 
 ```{r layer_plot3, eval=TRUE}
@@ -447,7 +465,7 @@ colorPallette <- findColours(intervals, colors)
 
 ```
 
-###MAP 2
+
 <a id='fig6'></a>
 ```{r plot3, eval=TRUE, include=TRUE}
 
@@ -456,7 +474,9 @@ shrinkLegend=1
 title="Percent change in u5 mortality rate in Mozambique by province \n(2000-2010)"
 
 # first the ORIGINAL to signal missing values:
-plot(mozzipMap,col='red',main=title, border="black", lwd=1, source=source) 
+plot(mozzipMap,col='red',main=title, border="black", lwd=1) 
+
+title(sub=source, adj=0)
 
 # now the info on contributions
 plot(layerContrib_3, col = colorPallette,border=NA,add=T) #add
@@ -468,7 +488,10 @@ legend('topright',
        cex = shrinkLegend, #size 
        bty = "n", # no box
        title=legendText)
+
 ```
 
+<br>
+<br>
 
 

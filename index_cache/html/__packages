@@ -3,3 +3,13 @@ ggplot2
 ggrepel
 foreign
 haven
+utilsIPEA
+sp
+rgdal
+raster
+tmaptools
+tmap
+leaflet
+RColorBrewer
+classInt
+dplyr
