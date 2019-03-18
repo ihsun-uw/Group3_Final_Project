@@ -3,3 +3,27 @@ ggplot2
 ggrepel
 foreign
 haven
+<<<<<<< HEAD
+=======
+uwIntroStats
+dplyr
+readr
+ggiraph
+ggiraphExtra
+dotwhisker
+broom
+openxlsx
+>>>>>>> 78fdaf894d5e1b1a66db6130c866345650fdd527
+utilsIPEA
+sp
+rgdal
+raster
+tmaptools
+tmap
+leaflet
+RColorBrewer
+classInt
+<<<<<<< HEAD
+dplyr
+=======
+>>>>>>> 78fdaf894d5e1b1a66db6130c866345650fdd527
