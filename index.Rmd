@@ -171,8 +171,8 @@ lollitplot4
 
 <br>
 
-####**Univariate #2: Box Plot**
-#####*Average number of supervision per community health worker*
+####**Univariate #2: Lolliplot**
+#####*Gap to reach under five mortality goal by region*
 
 <br>
 
@@ -189,7 +189,7 @@ This dataset includes information across different years. For this plot, we are 
 df_2010 <- subset(df, year==2010)
 df_2010=df_2010[order(df_2010$U5M_COMB),]
 df_2010$gap <- df_2010$U5M_COMB - 75
-df_2010$Target=ifelse(df_2010$gap>0,"-Not Achieved","Achieved")
+df_2010$Target=ifelse(df_2010$gap>0,"Not Achieved","Achieved")
 ```
 
 Let's define some other plot elements such as title, source etc.
