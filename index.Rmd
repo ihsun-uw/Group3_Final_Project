@@ -20,7 +20,11 @@ This tutorial includes 7 figures:
 
 6. Multivariate: [Regression Confidence Intervals - Effect of Health Human resources and Service Utilization on Child Mortality](#fig6)
 
-7. Maps: [Change in under 5 mortality rate from 2000-2010 by province](#fig7)
+7. Maps: [Under 5 mortality rate by province in 2010](#fig7)
+
+8. Maps: [Change in under 5 mortality rate from 2000-2010 by province](#fig8)
+
+
 
 
 For this final project, we used data from two sources. The first is the Under Five Mortality Dataset. The second is the Community Health Workers dataset. 
@@ -35,22 +39,30 @@ To understand the extent to which the program implementation was achieving the e
 You can access the github repository [HERE](https://github.com/ihsun-uw/Group3_Final_Project)
 In the repository, you can download the R markdown file used to create this page as well as the two main datasets used, and shapefiles for mapping. 
 
-<<<<<<< HEAD
+
 <br>
 
-First, we bring in the dataset we will use and load libraries. 
+###**Beginning the code to produce data visualizations**
+
+---------------
+
+Before we begin to create the visualizations, we will need to install and load the necessary libraries. 
+
 ```{r setup, warning=FALSE, message=FALSE}
 
 knitr::opts_chunk$set(echo = TRUE, warnings=FALSE, message=FALSE)
 
-if (!require(ggrepel)) install.packages("ggrepel", repos = "http://cran.us.r-project.org")
-=======
-##Univariate
+if (!require(ggrepel)) install.packages("ggrepel", repos = "http://cran.us.r-project.org", dependencies = TRUE)
+if (!require(ggiraph)) install.packages("ggiraph", repos = "http://cran.us.r-project.org", dependencies = TRUE)
+if (!require(ggiraphExtra)) install.packages("ggiraphExtra", repos = "http://cran.us.r-project.org", dependencies = TRUE)
+if (!require(dplyr)) install.packages("dplyr", repos = "http://cran.us.r-project.org", dependencies = TRUE)
+if (!require(dotwhisker)) install.packages("dotwhisker", repos = "http://cran.us.r-project.org", dependencies = TRUE)
+if (!require(openxlsx)) install.packages("openxlsx", repos = "http://cran.us.r-project.org", dependencies = TRUE)
 
-Before we begin to create the visualizations, we will need to install and load the necessary libraries. 
+```
 
-```{r, message=FALSE}
->>>>>>> 78fdaf894d5e1b1a66db6130c866345650fdd527
+
+```{r, message=FALSE, warning=FALSE}
 library(ggplot2)
 library(foreign)
 library(haven)
@@ -64,27 +76,29 @@ library(dotwhisker)
 library(broom)
 library(dplyr)
 library(openxlsx)
-
-<<<<<<< HEAD
-link="https://github.com/quinhasf/pubpol-599/raw/master/ape_analysis.dta"
-chw_fp <- read_dta(url(link))
 ```
 
 <br>
-=======
-#This line tells R how to treat the chunks when knitting the markdown file.
-knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=TRUE)
 
-```
 
-Next, we will need to bring in the data and tell R to create a new dataframe. For the first plot, we will use the Community Health Workers Dataset. 
-```{r, include=FALSE}
->>>>>>> 78fdaf894d5e1b1a66db6130c866345650fdd527
+###**Univariate data visualizations**
+
+------------------
+
+####**Univariate #1: Lolliplot**
+#####*Community health worker contribution to family planning*
+
+<br>
+
+
+First, we bring in the dataset we will use. 
+```{r data_initial, include=TRUE}
 
 link="https://github.com/quinhasf/pubpol-599/raw/master/ape_analysis.dta"
-
 chw_fp <- read_dta(url(link))
+
 ```
+
 
 We will be using the ggplot package to create the visualization. Ggplot can only read the data in a dataframe (as opposed to a table/vector). 
 ```{r}
@@ -152,21 +166,25 @@ lollitplot4 = lolliplot3 + geom_text(size=3, nudge_x=0.35, nudge_y=0.1,show.lege
                     color = "black",
                     size= 0.9,
                     alpha= 0.8)
+
 lollitplot4 
 ```
 
-<<<<<<< HEAD
+
 <br>
 
-###Box Plot: Average number of supervision per community health worker
-=======
+####**Univariate #2: Box Plot**
+#####*Average number of supervision per community health worker*
+
+<br>
+
 Let's do it again, but with a new dataset. This dataset is about child mortality rates in Mozambique. Include the link and tell R to read it. 
 ```{r}
 link="https://github.com/ihsun-uw/Group3_Final_Project/raw/master/child_mortality.dta"
 
 df <- read_dta(url(link))
 ```
->>>>>>> 78fdaf894d5e1b1a66db6130c866345650fdd527
+
 
 This dataset includes information across different years. For this plot, we are only looking at 2010. So, as before, we want to create a dataframe with relevant information. This relevant information includes whether or not each province achieved its target for child mortality rates. 
 ```{r}
@@ -181,10 +199,9 @@ Let's define some other plot elements such as title, source etc.
 ```{r}
 loli_title2 = "Mozambique 2010 Gap analysis to achieve MDG 4 Goal"
 loli_subtitle2 = "Province level gap to achieve under five mortality reduction goal"
-loli_caption2 = "Fig.2: Represents province level gap to achieve 2/3 reduction on under five mortality rate (75 per 1000 live births target centered at 0).
+loli_caption2 = "Fig.2: Represents province level gap to achieve 2/3 reduction on under five mortality rate (75 per 1000 live births target centered at 0)
       
-       
-       Source:Demographic Health Surveys"
+       Source: Demographic Health Surveys"
 
 ```
 
@@ -231,13 +248,19 @@ lollitplot4 = lolliplot3 + geom_text(nudge_x=0.35, nudge_y=0.1,show.legend = F, 
 lollitplot4 
 ```
 
-##Bivariate 
-
-<<<<<<< HEAD
 <br>
-=======
+
+###**Bivariate data visualizations**
+
+--------------------------
+
+####**Bivariate #1: Box plot**
+####*Under five mortality rate by region*
+
+
+<br>
+
 Let's create a few box plots to show the distribution of under five mortality in the difference regions in Mozambique. 
->>>>>>> 78fdaf894d5e1b1a66db6130c866345650fdd527
 
 So we don't mess with the original data, let's create a new dataframe. 
 ```{r}
@@ -250,13 +273,13 @@ box_title = "Under Five Mortality Distribuition by Region in Mozambique"
 box_caption = "Fig.3 Represents the distribution of under five mortality rates (per 1000 LB) in different regions by province.
       
        
-       Source:Demographic Health Surveys"
+       Source: Demographic Health Surveys"
   
 ```
 
 Now we can plot. Note that we wanted the plot to be ordered with provinces that had the highest child mortality rates on the left and in decreasing order to the right. 
 <a id='fig3'></a>
-```{r}
+```{r, warning=FALSE}
 
 base = ggplot(df, aes(x=reorder(provname,-U5M_COMB), y=U5M_COMB)) #This is where we designate that we want the plot to be ordered
 biv_boxplot = base + geom_boxplot(varwidth=T, fill="grey80") + 
@@ -275,7 +298,17 @@ biv_boxplot = base + geom_boxplot(varwidth=T, fill="grey80") +
 biv_boxplot
 ```
 
-#Multivariate
+<br>
+
+###**Multivariate data visualizations**
+
+--------------------------
+
+####**Multivariate #1: Radar plot**
+#####*Plot of main variables by province*
+
+<br>
+
 
 Let's create some mutivariate plots. The first plot is a radar plot. 
 
@@ -311,11 +344,7 @@ df_aggre1$provname=factor(df_aggre1$provname,
                    ordered = T)
 ```
 
-<<<<<<< HEAD
-<br>
 
-###SCATTER 2
-=======
 Now that it is ordered, we can clean up the data frame before we plot. We don't need the ranks and we want the column names to be labeled properly so they make sense in the plot. 
 ```{r}
 # delete column with ranks
@@ -325,8 +354,9 @@ colnames(df_aggre1) <- c("provname", "Health Professional Present at Birth", "He
 ```
 
 Now we can create our radar plot. Remember to give you plot a title and appropriate caption! 
->>>>>>> 78fdaf894d5e1b1a66db6130c866345650fdd527
+
 <a id='fig4'></a>
+
 ```{r fig.width=20, fig.height=10,echo=TRUE}
 
 radar_title= "Radar plot: Province Main Study Variables"
@@ -347,6 +377,13 @@ radar1 = base + facet_wrap(~provname,nrow =2) +
 radar1 
 ```
 
+<br>
+
+####**Multivariate #2: Scatter Plot**
+#####*Scatter plot of factors that may influence u5 mortality*
+
+<br>
+
 We can also create a multivariate plot to look at what is happening with these various factors over time. 
 
 ```{r}
@@ -363,7 +400,7 @@ base = ggplot(df1, aes()) +
 
 Create plot of factors that can affect mortality rates
 <a id='fig5'></a>
-```{r}
+```{r, warning = FALSE}
 scat_title = "Factors that may Influence the Mortality Rate in Mozambique over time"
 scat_caption = "Fig. 5 This figure represents trends in three key factors (health worker density, midwife density, and medical 
 doctor density) from 2000 to 2010. 
@@ -380,8 +417,16 @@ scat = base + geom_smooth(aes(x=year, y=mddensity), method="loess", se=T, size=1
                     plot.title = element_text(hjust = 0.5)) +
   scale_x_continuous(breaks = c(2000,2002,2004,2006,2008,2010))  + theme(legend.title=element_blank())
 
-scat  
+scat 
+
 ```
+
+<br>
+
+####**Multivariate #3: Regression**
+#####*Effect of health human resources factors on child mortality*
+
+<br>
 
 Now that we have examined these different variables. Let's run a regression to see if there is any statistically significant association between these factors and child mortality rates. 
 
@@ -462,75 +507,61 @@ regplot2 = regplot1 + labs(title = reg_title,
 regplot2
 ```
 
-<<<<<<< HEAD
+
+
 <br>
+
+###**MAPS**
+
+-----------------------------
+
+####**Map #1**
+#####*Map of under five mortality by province*
+
 <br>
 
-###MAPS of Under 5 Mortality Rate
-=======
+To begin the map section we will first install some necessary packages
 
+```{r install_packages, warning=FALSE}
 
+knitr::opts_chunk$set(warning=FALSE, include=TRUE)
 
-##Maps
->>>>>>> 78fdaf894d5e1b1a66db6130c866345650fdd527
-
-```{r install_packages, eval=TRUE, include=FALSE}
-
-if (!require(utilsIPEA)) install.packages("utilsIPEA", repos = "http://cran.us.r-project.org")
-if (!require(rgdal)) install.packages("rgdal", repos = "http://cran.us.r-project.org")
-if (!require(raster)) install.packages("raster", repos = "http://cran.us.r-project.org")
-if (!require(tmaptools)) install.packages("tmaptools", repos = "http://cran.us.r-project.org")
-#install.packages("mapshaper", repos = "http://cran.us.r-project.org")
-if (!require(tmap)) install.packages("tmap", repos = "http://cran.us.r-project.org")
-if (!require(leaflet)) install.packages("leaflet", repos = "http://cran.us.r-project.org")
-if (!require(RColorBrewer)) install.packages("RColorBrewer", repos = "http://cran.us.r-project.org")
-if (!require(classInt)) install.packages("classInt", repos = "http://cran.us.r-project.org")
-if (!require(dplyr)) install.packages("dplyr", repos = "http://cran.us.r-project.org")
+if (!require(utilsIPEA)) install.packages("utilsIPEA", repos = "http://cran.us.r-project.org", dependencies=TRUE, lib="C:/Users/dcoomes/Documents/R/win-library/3.5")
+if (!require(rgdal)) install.packages("rgdal", repos = "http://cran.us.r-project.org", dependencies=TRUE, lib="C:/Users/dcoomes/Documents/R/win-library/3.5")
+if (!require(raster)) install.packages("raster", repos = "http://cran.us.r-project.org", dependencies=TRUE, lib="C:/Users/dcoomes/Documents/R/win-library/3.5")
+if (!require(tmaptools)) install.packages("tmaptools", repos = "http://cran.us.r-project.org", dependencies=TRUE, lib="C:/Users/dcoomes/Documents/R/win-library/3.5")
+if (!require(leaflet)) install.packages("leaflet", repos = "http://cran.us.r-project.org", dependencies=TRUE, lib="C:/Users/dcoomes/Documents/R/win-library/3.5")
+if (!require(RColorBrewer)) install.packages("RColorBrewer", repos = "http://cran.us.r-project.org", dependencies=TRUE, lib="C:/Users/dcoomes/Documents/R/win-library/3.5")
+if (!require(classInt)) install.packages("classInt", repos = "http://cran.us.r-project.org", dependencies=TRUE, lib="C:/Users/dcoomes/Documents/R/win-library/3.5")
+if (!require(dplyr)) install.packages("dplyr", repos = "http://cran.us.r-project.org", dependencies=TRUE, lib="C:/Users/dcoomes/Documents/R/win-library/3.5")
 library(utilsIPEA)
 library(rgdal)
 library(raster)
 library(tmaptools)
-#library(mapshaper)
-library(tmap)
 library(leaflet)
 library(RColorBrewer)
 library(classInt)
-library(dplyr)
 
 ```
 
 
-```{r package, eval=TRUE, cache=TRUE, include=FALSE}
-
-install.packages("haven", repos = "http://cran.us.r-project.org")
-install.packages("ggplot2", repos = "http://cran.us.r-project.org")
-install.packages("foreign", repos = "http://cran.us.r-project.org")
-library ("haven")
-library("ggplot2")
-library("foreign")
-
-```
-
-Bringing in mortality and map data
+Next, we bring in the child mortality data
 
 ```{r data, include=TRUE}
-
-#link="https://github.com/quinhasf/pubpol-599/raw/master/ape_analysis.dta"
-#chw_fp <- read_dta(url(link))
 
 link="https://github.com/ihsun-uw/Group3_Final_Project/raw/master/child_mortality.dta"
 df <- read_dta(url(link))
 
 ```
 
-
+Then, we bring in our map data. The map data is stored in a zip file in github. To access it we'll have to download and unzip it.
 ```{r map, include=TRUE, eval=TRUE}
 
 zip_mozmap_SHP = "https://github.com/ihsun-uw/Group3_Final_Project/raw/master/Mozambique%20shape%20maps.zip"
 
 ```
 
-
+Downloading the shape files
 ```{r, eval=TRUE}
 library(utils)
 temp=tempfile()
@@ -538,17 +569,15 @@ download.file(zip_mozmap_SHP, temp)
 unzip(temp)
 ```
 
-
-```{r, include=FALSE }
-
-#DMC - showing which tempfiles are in the directory
+Showing which tempfiles (our shape file) is in the directory
+```{r, include=TRUE}
 
 (maps=list.files(pattern = 'shp'))
+
 ```
 
-
+Reading the shape file into R
 ```{r, eval=TRUE, results='hide', warning=FALSE, message=FALSE}
-# notice the parameters use in the chunk!!
 
 library(rgdal)
 mozzipMap <- readOGR("MOZ-level_1.shp",stringsAsFactors=F) 
@@ -568,9 +597,9 @@ mozzipMap <- readOGR("MOZ-level_1.shp",stringsAsFactors=F)
 10: Zambezia
 -->
 
-```{r recoding_provinces, eval=TRUE, include=FALSE}
+The region is coded differently in the shape file data and the mortality data. We are making sure the provinces are coded the same for both data sets.
+```{r recoding_provinces, eval=TRUE, include=TRUE, warning=FALSE}
 
-#SchoolData$Grade[SchoolData$Grade==5] <- "Grade Five"
 chw_fp$province_num <- chw_fp$province
 chw_fp$province_num[chw_fp$province=="CABO DELGADO"] <- 1
 chw_fp$province_num[chw_fp$province=="GAZA"] <- 2
@@ -584,12 +613,6 @@ chw_fp$province_num[chw_fp$province=="TETE"] <- 9
 chw_fp$province_num[chw_fp$province=="ZAMBEZIA"] <- 10
 
 
-#str(mozzipMap$ID)
-#names(mozzipMap)
-#mozzipMap
-
-#mozzipMap$province_num <- mozzipMap$ID
-
 mozzipMap$province_num[mozzipMap$ID=="Cabo Delgado"] <- 1
 mozzipMap$province_num[mozzipMap$ID=="Gaza"] <- 2
 mozzipMap$province_num[mozzipMap$ID=="Inhambane"] <- 3
@@ -602,7 +625,6 @@ mozzipMap$province_num[mozzipMap$ID=="Tete"] <- 9
 mozzipMap$province_num[mozzipMap$ID=="Zambezia"] <- 10
 mozzipMap$province_num[mozzipMap$ID=="Maputo (city)"] <- 11
 
-#chw_fp
 
 df$province_num[df$provname=="Cabo Delgado"] <- 1
 df$province_num[df$provname=="Gaza"] <- 2
@@ -618,8 +640,11 @@ df$province_num[df$provname=="Maputo Cidade"] <- 11
 
 #creating new data frame with just the year 2010
 df_new <- df[111:121,1:26]
+```
 
-#creating change in u5 mortality rate from 2000 - 2010
+We also want to create a new variable that is the change in mortality from 2000 to 2010
+``` {r mortality_change}
+
 df_new$u5_change[df_new$province_num==1] <- 100*(df_new$U5M_COMB[df_new$province_num==1] - df$U5M_COMB[df$province_num==1 & df$year==2000])/df$U5M_COMB[df$province_num==1 & df$year==2000]
 df_new$u5_change[df_new$province_num==2] <- 100*(df_new$U5M_COMB[df_new$province_num==2] - df$U5M_COMB[df$province_num==2 & df$year==2000])/df$U5M_COMB[df$province_num==2 & df$year==2000]
 df_new$u5_change[df_new$province_num==3] <- 100*(df_new$U5M_COMB[df_new$province_num==3] - df$U5M_COMB[df$province_num==3 & df$year==2000])/df$U5M_COMB[df$province_num==3 & df$year==2000]
@@ -635,20 +660,18 @@ df_new$u5_change[df_new$province_num==11] <- 100*(df_new$U5M_COMB[df_new$provinc
 
 ```
 
-<br>
 
-<<<<<<< HEAD
-###MAP 1
-Creating the first map of the under 5 mortality rate by province
 
-=======
->>>>>>> 78fdaf894d5e1b1a66db6130c866345650fdd527
+Now that we have the data cleaned, we can create the first map of the under 5 mortality rate by province. 
+We start by merging the map with the mortality data frame.
+
 ```{r layer_plot2, eval=TRUE}
 
 layerContrib_2=merge(mozzipMap,df_new, by.x='province_num', by.y='province_num',all.x=F)
 
 ```
 
+Next, we define which variable in the data frame we want to plot on the map.
 
 ```{r define_var_plot2, include=TRUE, eval=TRUE}
 
@@ -656,7 +679,7 @@ varToPlot_2=layerContrib_2$U5M_COMB
 
 ```
 
-
+Then we set the colors for the map and the interval for the mortality data.
 ```{r color_plot2, eval=TRUE, include=TRUE}
 
 numberOfClasses=5
@@ -664,37 +687,54 @@ colorForScale='OrRd'
 colors = brewer.pal(numberOfClasses, colorForScale)
 intervals <- classIntervals(varToPlot_2, numberOfClasses,
                             style = "kmeans",
-                            dataPrecision = 0)
+                            dataPrecision = 2)
                            
 colorPallette <- findColours(intervals, colors)
 
 ```
 
-<<<<<<< HEAD
 
-<a id='fig5'></a>
+Finally, we plot the map.
+
+<a id='fig7'></a>
 ```{r plot_2, eval=TRUE, include=TRUE}
 
 legendText="u5 mortality rate"
 shrinkLegend=1
 title="Under 5 mortality rate in Mozambique by province (2010)"
+subtitle="Figure 7: Shows the under 5 mortality rate by province (including the capital) \nin Mozambique in 2010
+
+Source: DHS"
 
 
 # first the ORIGINAL to signal missing values:
 plot(mozzipMap,col='red',main=title, border="black", lwd=1) 
 
-title(sub=source, adj=0)
+title(sub=subtitle, adj=0) 
 
-# now the info on contributions
+# now the info on u5 mortality
 plot(layerContrib_2, col = colorPallette,border=NA,add=T) #add
-=======
->>>>>>> 78fdaf894d5e1b1a66db6130c866345650fdd527
+
+legend('topright', 
+       legend = names(attr(colorPallette, "table")), #values
+       fill = attr(colorPallette, "palette"), #colors
+       cex = shrinkLegend, #size 
+       bty = "n", # no box
+       title=legendText)
+
+
+```
+
 
 
 <br>
 
 
-###MAP 2
+####**MAP #2**
+#####*Map of the change in the under 5 mortality rate by region*
+
+<br>
+
 Generating one more data set for mapping - change in u5 MR
 
 ```{r layer_plot3, eval=TRUE}
@@ -703,14 +743,14 @@ layerContrib_3=merge(mozzipMap,df_new, by.x='province_num', by.y='province_num',
 
 ```
 
-
+Defining the variable we want to plot
 ```{r define_var_plot3, include=TRUE, eval=TRUE}
 
 varToPlot_3=layerContrib_2$u5_change
 
 ```
 
-
+Defining the color of the map and the intervals
 ```{r color_plot3, eval=TRUE, include=TRUE}
 
 numberOfClasses=5
@@ -724,31 +764,24 @@ colorPallette <- findColours(intervals, colors)
 
 ```
 
-<<<<<<< HEAD
 
-<a id='fig6'></a>
-=======
-Map 
-<a id='fig7'></a>
->>>>>>> 78fdaf894d5e1b1a66db6130c866345650fdd527
+<a id='fig8'></a>
+Finally, plotting the second map
 ```{r plot3, eval=TRUE, include=TRUE}
 
 legendText="Change in u5 mortality"
 shrinkLegend=1
-title="Percent change in u5 mortality rate in Mozambique by province \n(2000-2010)"
+title="Percent change in u5 mortality rate in Mozambique by province"
+subtitle="Figure 8: Shows the percent change in under five mortality by province in \nMozambique from 2000-2010.
 
-# first the ORIGINAL to signal missing values:
+Source: DHS"
+
 plot(mozzipMap,col='red',main=title, border="black", lwd=1) 
-<<<<<<< HEAD
 
-title(sub=source, adj=0)
-=======
->>>>>>> 78fdaf894d5e1b1a66db6130c866345650fdd527
-
-# now the info on contributions
 plot(layerContrib_3, col = colorPallette,border=NA,add=T) #add
 
-# this uses all previous information
+title(sub=subtitle, adj=0) 
+
 legend('topright', 
        legend = names(attr(colorPallette, "table")), #values
        fill = attr(colorPallette, "palette"), #colors
