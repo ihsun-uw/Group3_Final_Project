@@ -197,9 +197,9 @@ Let's define some other plot elements such as title, source etc.
 ```{r}
 loli_title2 = "Mozambique 2010 Gap analysis to achieve MDG 4 Goal"
 loli_subtitle2 = "Province level gap to achieve under five mortality reduction goal"
-loli_caption2 = "Fig.2: Represents province level gap to achieve 2/3 reduction on under five mortality rate (75 per 1000 live births target centered at 0)
+loli_caption2 = "Fig.2: Represents province level gap to achieve 2/3 reduction on under five mortality rate (75 per 1000 live births target centered at 0). \nProvinces below zero have met the 2010 target while those above zero have not.
       
-       Source: Demographic Health Surveys"
+Source: Demographic Health Surveys"
 
 ```
 
